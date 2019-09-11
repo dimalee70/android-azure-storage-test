@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature
 import com.microsoft.azure.storage.blob.CloudBlob
 import com.microsoft.azure.storage.blob.CloudBlobClient
 import com.microsoft.azure.storage.blob.CloudBlobContainer
+import com.microsoft.azure.storage.blob.CloudBlockBlob
 import java.io.InputStream
 import java.lang.StringBuilder
 import java.net.URI
@@ -51,8 +52,18 @@ inline fun ListImagesActivity.getContainer(): CloudBlobContainer{
     return container
 }
 
+inline fun InputStream.upLoadImage(path: String){
+    val imageName = this.randomstring(10)
+    val blobUri = Constants.SAS_URL + imageName
+    val SAS = StorageCredentialsSharedAccessSignature(Constants.SAS_TOKEN)
+    val cloudBlockBlob = CloudBlockBlob(URI.create(blobUri),SAS)
+    cloudBlockBlob.uploadFromFile(path)
+}
+
 inline fun ListImagesActivity.listImages(): Array<String> {
-    val container = getContainer()
+    val SAS = StorageCredentialsSharedAccessSignature(Constants.SAS_TOKEN)
+    val cloudBlockBlob = CloudBlockBlob(URI.create(Constants.SAS_URL),SAS)
+    val container = cloudBlockBlob.container
     val blobs = container.listBlobs()
     val blobNames = LinkedList<String>()
     for (blob in blobs){

@@ -72,11 +72,11 @@ class MainActivity : AppCompatActivity() {
 
 
             val imageStream = contentResolver.openInputStream(this.imageUri!!)
-            val imageName = imageStream!!.randomstring(10)
-            val blobUri = Constants.SAS_URL + imageName
-            val SAS = StorageCredentialsSharedAccessSignature(Constants.SAS_TOKEN)
-            val cloudBlockBlob = CloudBlockBlob(URI.create(blobUri),SAS)
-            var imageLength = imageStream.available()
+//            val imageName = imageStream!!.randomstring(10)
+//            val blobUri = Constants.SAS_URL + imageName
+//            val SAS = StorageCredentialsSharedAccessSignature(Constants.SAS_TOKEN)
+//            val cloudBlockBlob = CloudBlockBlob(URI.create(blobUri),SAS)
+//            var imageLength = imageStream.available()
 ////            cloudBlockBlob.upload(imageStream, imageLength.toLong())
 //            val path = getImagePath(imageUri!!)
 //            cloudBlockBlob.uploadFromFile(path)
@@ -86,8 +86,7 @@ class MainActivity : AppCompatActivity() {
                 try {
 
                     val path = getImagePath(imageUri!!)
-                    cloudBlockBlob.uploadFromFile(path)
-
+                    imageStream!!.upLoadImage(path)
 
 //                    val imageStream = contentResolver.openInputStream(this.imageUri!!)
 //                    val imageName = imageStream!!.randomstring(10)
@@ -102,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 //                    val imageName = imageStream.uploadImage(imageLength)
 
                     handler.post{
-                        Toast.makeText(this, "Image Uploaded Successfully. Name = " + imageName,
+                        Toast.makeText(this, "Image Uploaded Successfully.",
                             Toast.LENGTH_SHORT).show()
                     }
                 }catch (ex: Exception){
